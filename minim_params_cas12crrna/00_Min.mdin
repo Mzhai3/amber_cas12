@@ -1,0 +1,15 @@
+Initial solvent/ion minimization
+&cntrl
+  imin=1,
+  maxcyc=10000,
+  ncyc=5000,
+
+  ntb=1,
+  cut=10.0,
+
+  ntr=1,
+  restraint_wt=300.0,
+  restraintmask=':1-1251',
+
+  ntpr=100,
+/

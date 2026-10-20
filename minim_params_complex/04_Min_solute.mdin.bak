@@ -1,0 +1,30 @@
+Solute Energy Minimization Stage 
+
+&cntrl
+! Run Control
+  imin = 1,			! Flag to run minimization
+  ntmin = 0,			! Minimization algorithm
+  maxcyc = 2000,		! maximum # of cycles for minimization
+
+! Input_Output Control
+  ntx = 1,			! Read coordinates and/or velocities: 1 = start, 5 = restart
+  ntpr = 0,			! Every ntpr steps, print human-readable energy info
+  ntwx = 0,			! Every ntwx steps, print coordinates to mdcrd file
+
+! Restraints
+  ntr = 1,				! Flag for restraining specified atoms
+  restraint_wt = 0.0,			! Restraint weight (in kcal/mol-A2) for positional
+  restraintmask = '!@H= & !:NA,CL,MG,WAT', ! (restrain only solute)
+
+ 
+! Miscellaneous
+  cut = 12.0,			! Non-bonded interaction cutoff (in A)
+  nmropt = 1,           ! Anything in the &wt section will be read
+
+/
+&wt type = 'DUMPFREQ', istep1 = 1000, /
+&wt type='END' /
+DISANG=restrnt.disang
+DUMPAVE=restrnt.dumpave
+LISTOUT=POUT
+LISTIN=POUT

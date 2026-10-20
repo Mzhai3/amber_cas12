@@ -1,0 +1,56 @@
+Initial Equilibration after Solvent Min and Heating
+NPT Stage
+Hold at 300K and 1 atm for 5 ps
+
+&cntrl
+! Run Control
+  imin = 0,			! Flag to run minimization
+  nstlim = 5000,		! Number of MD steps
+  dt = 0.001,			! 0.001 ps time step (1 fs)
+
+! Input_Output Control
+  ntx = 1,			! Read coordinates and/or velocities
+  ntpr = 1000,			! Every ntpr steps, print human-readable energy info
+  ntwx = 1000,			! Every ntwx steps, print coordinates to mdcrd file
+  ntwr = 1000,                 ! Every ntwr steps, print coordinates to restart file
+  irest = 0,			! Do not restart simulation, ignore velocities, step count = 0
+  ioutfm = 1,                   ! Binary NetCDF trajectory (not ASCII - can't be viewed by vim)
+
+! Restraints
+  ntr = 1,				! Flag for restraining specified atoms
+  restraint_wt = 50.0,			! Restraint weight (in kcal/mol-A2) for pos
+  restraintmask = '!@H= & !:NA,CL,MG,WAT', ! (restrain only solute)
+
+
+! Temperature Control
+  ntt = 3,			! Sets the thermostat to be used, 3 = Langevin dynamics
+  gamma_ln = 5.0,		! Collision frequency for Langevin dynamics
+  ig=-1,			! Sets pseudo-random seed to be based on wallclock
+  temp0 = 298.0,		! Reference temperature
+
+! Pressure Control
+  ntp = 1,			! Isotropic position scaling
+  barostat = 1,			! Berendsen (default)
+  pres0 = 1.0,			! Reference pressure (in bar)
+  taup = 1.0,			! Pressure relaxation time
+
+! Miscellaneous
+  cut = 12.0,			! Non-bonded interaction cutoff (in A)
+  nmropt = 1,			! Anything in the &wt section will be read
+  nscm = 100                    ! COM motion removal intervals
+
+! Periodic Boundary Conditions
+  ntb = 2,			! Sets pbc, 0=none, 1=const_V, 2=const_P
+  iwrap = 0,			! Wrapping 1=ON and 0=OFF 
+
+! SHAKE
+  ntc = 2,			! Sets SHAKE to contrain Hs
+  ntf = 2,			! Omit bond interactions involving Hs (use with ntc = 2)
+/
+&wt type = 'DUMPFREQ', istep1 = 10000, /
+&wt type='END' /
+DISANG=restrnt.disang
+DUMPAVE=restrnt.dumpave
+LISTOUT=POUT
+LISTIN=POUT
+

@@ -1,0 +1,22 @@
+source leaprc.protein.ff19SB
+source leaprc.RNA.OL3
+source leaprc.DNA.OL15
+source leaprc.water.opc
+
+#loadOff terminal_monophosphate.lib
+
+complex = loadPdb "/work/mzhai/crispr_pipeline_manual/amber/afm/Lb004_complex/Lb004_complex_toleap.pdb"
+
+#saveAmberParm complex hdock/Lb00_gas.prmtop hdock/Lb00_gas.inpcrd i have never once look at ts
+
+
+solvateOct complex OPCBOX 10.0
+
+addIons complex Na+ 0 
+addIons complex Cl- 0
+
+check complex
+
+saveAmberParm complex /work/mzhai/crispr_pipeline_manual/amber/afm/Lb004_complex/Lb004_complex.parm7 /work/mzhai/crispr_pipeline_manual/amber/afm/Lb004_complex/Lb004_complex.rst7
+
+quit

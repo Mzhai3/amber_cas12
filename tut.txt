@@ -1,0 +1,45 @@
+This is a tutorial for how to use AMBER
+i swear this setup only works on qbc btw
+module purge
+module load amber/22/gcc-9.4.0-cuda-11.3.1-intel-mpi-2019.5.281
+
+source $AMBERHOME/amber.sh
+
+srun -n1 pdb4amber -h
+where -n1 represents using 1 core on the node
+pdb4amber is the comamnd you want to run
+-h is the flag for pdb4amber
+
+if in an interactive job you can use 
+top
+to check the memory usage
+
+tail -f file.out
+to see the output file being written live
+
+on qbd
+
+module purge
+module load ambertools...
+
+source $AMBERHOME/amber.sh
+
+IDK WHY YOU HAVE TO USE AMBERTOOLS FOR PDB4AMBER AND LEAP HERE
+
+
+
+
+1. pdb4amber
+    srun -n1 pdb4amber -i ... -o ...
+2. tleap
+    srun -n1 tleap -f .../leap.in
+3. minimization
+    change all the .in files in all_relax/ to have the right number of restraints 
+    find . -type f -name "*.in" -exec sed -i 's/1-1378/1-1228/g' {} +
+    sbatch all_relax.sh
+4. md 
+    sbatch md.sh
+
+
+
+

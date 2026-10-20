@@ -1,0 +1,3 @@
+readdate 3md.out 4md.out 6md.out name MyOutput
+list datasets
+writedata Density.agr MyOutput[Density]

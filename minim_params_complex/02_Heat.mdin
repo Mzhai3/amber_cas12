@@ -1,0 +1,55 @@
+Initial Heating After Solvent Minimization
+Constant V
+
+&cntrl
+! Run Control
+  imin = 0,			! Flag to run minimization
+  nstlim = 1600000,		! Number of MD steps (600ps for heating, hold at temp for 1 ns) 
+  dt = 0.001,			! 0.001 ps time step (1 fs)
+  vlimit = 20,
+
+! Input_Output Control
+  ntx = 1,			! Read coordinates and/or velocities: 1 = start, 5 = restart
+  irest = 0,                    ! Start or Restart simulation       : 0 = start, 1 = restart
+  ntpr = 10000,			! Every ntpr steps, print human-readable energy info
+  ntwx = 10000,			! Every ntwx steps, print coordinates to mdcrd file
+  ntwr = 10000,			! Evert ntwr steps, print coordinates to restart file
+  ioutfm = 1,			! Binary NetCDF trajectory (not ASCII - can't be viewed by vim)
+
+! Restraints
+  ntr = 1,                              ! Flag for restraining specified atoms
+  restraint_wt = 50.0,                  ! Restraint weight (in kcal/mol-A2) for positional restraints
+  restraintmask = '!@H= & !:NA,CL,MG,WAT', ! (restrain only solute)
+
+
+! Temperature Control
+  ntt = 3,			! Sets the thermostat to be used, 3 = Langevin dynamics
+  gamma_ln = 5.0,		! Collision frequency for Langevin dynamics
+  ig=-1,			! Sets pseudo-random seed to be based on wallclock
+  temp0 = 300.0,		! Sets ref temp for all steps not controlled by nmropt
+
+! Miscellaneous
+  cut =  12.0,			! Non-bonded interaction cutoff (in A)
+  nmropt = 1,			! Anything in the &wt section will be read
+  nscm = 100			! COM motion removal intervals
+
+! Periodic Boundary Conditions
+  ntb = 1,			! Sets pbc, 0=none, 1=const_V, 2=const_P
+  iwrap = 1,			! Makes sure wrapping is off for crystal simulations
+
+! SHAKE
+  ntc = 2,			! Sets SHAKE to contrain Hs
+  ntf = 2,			! Omit bond interactions involving Hs (use with ntc = 2)
+/
+&wt
+ TYPE='TEMP0',
+ ISTEP1=0, ISTEP2=600000,
+ VALUE1=0.0, VALUE2=300.0,
+/
+&wt type = 'DUMPFREQ', istep1 = 10000, /
+&wt type='END' /
+DISANG=restrnt.disang
+DUMPAVE=restrnt.dumpave
+LISTOUT=POUT
+LISTIN=POUT
+
